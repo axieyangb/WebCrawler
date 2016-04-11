@@ -1,0 +1,9 @@
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\ImgCrawler.exe.config
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\ImgCrawler.exe
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\ImgCrawler.pdb
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\Dapper.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\MySql.Data.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\Dapper.pdb
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\bin\Debug\Dapper.xml
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\obj\Debug\ImgCrawler.exe
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawler\obj\Debug\ImgCrawler.pdb

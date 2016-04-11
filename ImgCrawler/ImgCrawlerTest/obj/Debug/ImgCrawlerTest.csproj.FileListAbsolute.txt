@@ -1,0 +1,15 @@
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\ImgCrawlerTest.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\ImgCrawlerTest.pdb
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\ImgCrawler.exe
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\nunit.framework.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\MySql.Data.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\Dapper.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\ImgCrawler.pdb
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\nunit.framework.xml
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\Dapper.pdb
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\bin\Debug\Dapper.xml
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\obj\Debug\ImgCrawlerTest.csprojResolveAssemblyReference.cache
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\obj\Debug\ImgCrawlerTest.dll
+c:\users\axiey_000\documents\visual studio 2015\Projects\ImgCrawler\ImgCrawlerTest\obj\Debug\ImgCrawlerTest.pdb

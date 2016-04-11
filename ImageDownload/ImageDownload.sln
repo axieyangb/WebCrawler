@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownload", "ImageDownload\ImageDownload.csproj", "{B4864DD5-809A-49B8-8EA5-51BF999FCEC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDownloadTest", "ImageDownloadTest\ImageDownloadTest.csproj", "{C4C6F53E-0992-43B0-981E-785AB94048CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4864DD5-809A-49B8-8EA5-51BF999FCEC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4864DD5-809A-49B8-8EA5-51BF999FCEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4864DD5-809A-49B8-8EA5-51BF999FCEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4864DD5-809A-49B8-8EA5-51BF999FCEC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4C6F53E-0992-43B0-981E-785AB94048CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4C6F53E-0992-43B0-981E-785AB94048CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4C6F53E-0992-43B0-981E-785AB94048CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4C6F53E-0992-43B0-981E-785AB94048CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
