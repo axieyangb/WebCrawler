@@ -1,4 +1,4 @@
-If you just want to run the program  to test the functions you only need put following files in one folder
+<h4>If you just want to run the program  to test the functions you only need put following files in one folder</h4>
 
 In WebCrawler/ImgCrawler/ImgCrawler/bin/Debug/
 MySql.Data.dll
