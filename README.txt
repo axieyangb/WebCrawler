@@ -62,6 +62,25 @@ CREATE TABLE `ImgContent` (
 
 
 
+Start : 
+  Insert one root url into your UrlContent table:
+  <your start url> replace with your url root website ,and set depth to be 0
+  insert into UrlContent (Url,depth) values (<your start url>, 0);
+  
+  RUN The ImgCrawler.exe firstly,
+  The url in UrlContent will increase dramatically.
+  Then, run the ImageDownload.exe to download the files.
+  You can wait serveral mins after ImgCrawler.exe has grap bunch of imgs.
+ 
+ 
+ If your ImageDownload.exe normally exit, which means all found images have been downloaded. 
+ You can repeatly execute it if new images found.
+ 
+ 
+ Hope you will enjoy it.
+  
+
+
 
 
 
