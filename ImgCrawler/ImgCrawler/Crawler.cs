@@ -14,7 +14,8 @@ namespace ImgCrawler
     public class Crawler
     {
         private MySql.Data.MySqlClient.MySqlConnection conn;
-
+        private Queue<string> cacheQueue = new Queue<string>();
+        private HashSet<string> cacheHashSet = new HashSet<string>();
         public Crawler(string connString)
         {
             try
@@ -27,8 +28,31 @@ namespace ImgCrawler
             }
         }
 
+        public void SearchInitial(List<string> startList)
+        {
+            try
+            {
+                conn.Open();
+                conn.Execute("delete  from ImgContent where ImgId>=0");
+                conn.Execute("delete  from UrlContent where ListId>=0");
+                for (int i = 0; i < startList.Count; i++)
+                {
+                    conn.Execute("insert into UrlContent(Url,depth) values(@url,0)", new { url = startList[i] });
+                }
+            }
+            catch (Exception)
+            {
+                //ignore
+                throw;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+        }
         public List<UrlContent> GetHtmlUrl()
-        {     
+        {
             try
             {
                 conn.Open();
@@ -37,7 +61,7 @@ namespace ImgCrawler
             }
             catch (Exception e)
             {
-                if(conn.State== ConnectionState.Open)
+                if (conn.State == ConnectionState.Open)
                     conn.Close();
                 return new List<UrlContent>();
             }
@@ -45,8 +69,8 @@ namespace ImgCrawler
             {
                 conn.Close();
             }
-            
-            
+
+
         }
 
         public int GetUnporcessedUrlNumsByDepth(int depth)
@@ -75,7 +99,7 @@ namespace ImgCrawler
             {
                 conn.Open();
                 var ret = conn.Query<int>("select min(depth) from UrlContent where isVisited=0").First();
-               return ret;
+                return ret;
             }
             catch (Exception e)
             {
@@ -93,7 +117,7 @@ namespace ImgCrawler
             try
             {
                 conn.Open();
-                var ret = conn.Query<UrlContent>("select * from UrlContent where Depth=@depth and isVisited=0 limit 1000",new {depth}).ToList();
+                var ret = conn.Query<UrlContent>("select * from UrlContent where Depth=@depth and isVisited=0 limit 1000", new { depth }).ToList();
                 conn.Execute("update UrlContent set isVisited=1 where Depth=@depth and isVisited=0 limit 1000", new { depth });
                 return ret;
             }
@@ -116,6 +140,17 @@ namespace ImgCrawler
             return ret;
         }
 
+        private bool IsInCache(string url)
+        {
+            return cacheHashSet.Contains(url);
+        }
+
+        public void AddToCache(string url)
+        {
+            if (cacheQueue.Count >= 10000) cacheHashSet.Remove(cacheQueue.Dequeue());
+            cacheQueue.Enqueue(url);
+            cacheHashSet.Add(url);
+        }
         public bool HtmlUrlInsertIntoDb(List<UrlContent> htmlUrls)
         {
             try
@@ -123,15 +158,20 @@ namespace ImgCrawler
                 conn.Open();
                 for (int i = 0; i < htmlUrls.Count; i++)
                 {
+                    if (IsInCache(htmlUrls[i].Url)) continue;
                     int count =
-                        conn.Query<int>("select count(*) from UrlContent where Url=@url", new {url = htmlUrls[i].Url})
+                        conn.Query<int>("select count(*) from UrlContent where Url=@url", new { url = htmlUrls[i].Url })
                             .First();
-                    if (count==0)
+                    if (count == 0)
                     {
                         conn.Execute(@"insert into UrlContent(Url,Depth) values(@url,@depth)",
                       new { url = htmlUrls[i].Url, depth = htmlUrls[i].Depth });
                     }
-                  
+                    else
+                    {
+                        AddToCache(htmlUrls[i].Url);
+                    }
+
                 }
                 return true;
             }
@@ -154,12 +194,12 @@ namespace ImgCrawler
                 conn.Open();
                 for (int i = 0; i < imgUrls.Count; i++)
                 {
-                   int count= conn.Query<int>("select count(*) from ImgContent where ImgUrl=@imgUrl",
-                        new {imgUrl = imgUrls[i].ImgUrl}).First();
+                    int count = conn.Query<int>("select count(*) from ImgContent where ImgUrl=@imgUrl",
+                         new { imgUrl = imgUrls[i].ImgUrl }).First();
                     if (count == 0)
                     {
                         conn.Execute(@"insert into ImgContent(ImgUrl,UrlId) values(@url,@urlId)",
-                            new {url = imgUrls[i].ImgUrl, urlId = imgUrls[i].UrlId});
+                            new { url = imgUrls[i].ImgUrl, urlId = imgUrls[i].UrlId });
                     }
                 }
                 return true;
@@ -195,7 +235,7 @@ namespace ImgCrawler
                 }
             }
         }
-        public List<ImgContent> FindImgUrl(int htmlUrlId,string htmlContent)
+        public List<ImgContent> FindImgUrl(int htmlUrlId, string htmlContent)
         {
             HashSet<ImgContent> ret = new HashSet<ImgContent>();
             MatchCollection matches = Regex.Matches(htmlContent,
@@ -210,46 +250,12 @@ namespace ImgCrawler
             return ret.ToList();
         }
 
-        public List<UrlContent> FindHtmlUrl(string htmlContent,int depth,string rootUrl)
+        public List<UrlContent> FindHtmlUrl(string htmlContent, int depth, string rootUrl)
         {
-            HashSet<UrlContent> ret = new HashSet<UrlContent>();
-            MatchCollection matches = Regex.Matches(htmlContent,@"(href="")[-a-zA-Z0-9@:%_\+.~#?&//=]*("")");
-            foreach (var oneMatch in matches)
-            {
-                UrlContent oneUrl = new UrlContent();
-                oneUrl.Depth = depth;
-                oneUrl.Url = UrlProcess(rootUrl, oneMatch.ToString());
-                ret.Add(oneUrl);
-            }
-            return ret.ToList();
+            UrlSearchPattern oneSearchPattern = new RegexSearchPattern(htmlContent);
+            return oneSearchPattern.GetHtmlUrlList(depth, rootUrl);
         }
 
-        public string UrlProcess(string rootUrl, string matchUrl)
-        {
-            matchUrl = Regex.Replace(matchUrl, @"(href="")|("")", "");
-            if (matchUrl.StartsWith("/")) matchUrl = "http://" + new Uri(rootUrl).Host + matchUrl;
-            else if (matchUrl.StartsWith("../"))
-            {
-                List<string> splits = rootUrl.Split('/').ToList();
-                splits.RemoveAt(splits.Count - 1);
-                MatchCollection upLevel = Regex.Matches(matchUrl, @"(\.\.\/)");
-                string urlHeader;
-                if (splits.Count - upLevel.Count < 3) urlHeader = "http://" + new Uri(rootUrl).Host;
-                else
-                {
-                    splits.RemoveRange(splits.Count - upLevel.Count, upLevel.Count);
-                    urlHeader = String.Join("/", splits);
-                }
-                matchUrl=Regex.Replace(matchUrl, @"(../)", "");
-                matchUrl = urlHeader + "/" + matchUrl;
-            }
-            else if (!matchUrl.StartsWith("http://"))
-            {
-                List<string> splits=  rootUrl.Split('/').ToList();
-                splits.RemoveAt(splits.Count - 1);
-                matchUrl = String.Join("/", splits) + "/" + matchUrl;
-            }
-            return matchUrl;
-        }
+
     }
 }

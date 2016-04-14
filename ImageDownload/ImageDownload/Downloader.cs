@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -16,14 +17,14 @@ namespace ImageDownload
     
     public  class Downloader
     {
-        private readonly MySqlConnection conn;
-        private DirectoryInfo _imgDir;
+        private readonly MySqlConnection _conn;
+        private readonly DirectoryInfo _imgDir;
         public Downloader(string connString,string imgDir)
         {
              _imgDir = new DirectoryInfo(imgDir);
             try
             {
-                conn = new MySqlConnection(connString);
+                _conn = new MySqlConnection(connString);
             }
             catch (MySqlException ex)
             {
@@ -33,28 +34,29 @@ namespace ImageDownload
 
         public List<ImgContent> GetImageUrl()
         {
-            conn.Open();
+            _conn.Open();
             try
             {
-                var ret = conn.Query<ImgContent>("select * from ImgContent where isVisited=0 ORDER BY ImgId limit 100").ToList();
-                conn.Execute("UPDATE ImgContent SET isVisited=1 where isVisited=0 ORDER BY ImgId limit 100");
+                var ret = _conn.Query<ImgContent>("select * from ImgContent where isVisited=0 ORDER BY ImgId limit 100").ToList();
+                _conn.Execute("UPDATE ImgContent SET isVisited=1 where isVisited=0 ORDER BY ImgId limit 100");
                 return ret;
             }
             catch (Exception ex)
             {
-                if (conn.State == ConnectionState.Open)
-                    conn.Close();
+                if (_conn.State == ConnectionState.Open)
+                    _conn.Close();
                 return new List<ImgContent>();
             }
             finally
             {
-                conn.Close();
+                _conn.Close();
             }
             
             
         }
         public bool DownloadOneImage(string imgUrl)
         {
+            if (imgUrl.ToUpper().EndsWith("GIF")) return true;
             string[] splits = imgUrl.Split('/');
             string fileName = splits[splits.Length - 1];
             string[] fsplits = fileName.Split('.');
@@ -76,5 +78,6 @@ namespace ImageDownload
             }
             return true;
         }
+
     }
 }

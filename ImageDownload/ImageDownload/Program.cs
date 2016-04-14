@@ -21,7 +21,7 @@ namespace ImageDownload
             {
                 List<ImgContent> imgs = oneDownloader.GetImageUrl();
                 if (imgs.Count == 0) break;
-                for (int i = 0; i < imgs.Count; i++)
+                for (int i=0;i< imgs.Count;i++)
                 {
                     oneDownloader.DownloadOneImage(imgs[i].ImgUrl);
                 }

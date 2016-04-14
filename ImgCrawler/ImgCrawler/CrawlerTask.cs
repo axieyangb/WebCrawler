@@ -24,7 +24,7 @@ namespace ImgCrawler
         public void StartGrab()
         {
             int depth = _oneProgress.GetUnprocessedMinimunDepth();
-
+            //_oneProgress.SearchInitial(InitialStartSites());
                 while (true)
                 {
                     List<UrlContent> listOfNotProcessedUrls = _oneProgress.GetHtmlUrlByDepth(depth);
@@ -48,5 +48,15 @@ namespace ImgCrawler
                     }
                 }
             }
+
+        public List<string> InitialStartSites()
+        {
+            List<string> ret =new List<string>();
+            for (int i = 0; i < 100; i++)
+            {
+                ret.Add("http://cl.1024yq.info/thread0806.php?fid=16&search=&page="+(i+1));
+            }
+            return ret;
+        }
     }
 }

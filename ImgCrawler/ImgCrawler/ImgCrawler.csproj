@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Crawler.cs" />
     <Compile Include="CrawlerTask.cs" />
+    <Compile Include="RegexSearchPattern.cs" />
+    <Compile Include="UrlSearchPattern.cs" />
     <Compile Include="Model\ImgContent.cs" />
     <Compile Include="Model\UrlContent.cs" />
     <Compile Include="Program.cs" />
